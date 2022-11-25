@@ -37,9 +37,13 @@ public class CustomerController {
         try {
             GetCustomerByIdCommand getCustomerByIdCommand = beanFactory.getBean(GetCustomerByIdCommand.class, fiscalCode);
             CustomerModel customer = getCustomerByIdCommand.execute();
-            return new ResponseEntity<>(customer,HttpStatus.OK);
+            if(customer != null) {
+                return new ResponseEntity<>(customer,HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

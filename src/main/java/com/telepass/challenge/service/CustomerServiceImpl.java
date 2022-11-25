@@ -23,7 +23,11 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public CustomerModel retrieveCustomerById(String fiscalCode) throws Exception {
         Optional<CustomerModel> customerModel = customerRepository.findById(fiscalCode);
-        return customerModel.get();
+        if(!customerModel.isEmpty() && customerModel.get() != null) {
+            return customerModel.get();
+        } else {
+            return null;
+        }
     }
 
     @Override

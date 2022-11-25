@@ -25,8 +25,9 @@ public class GetCustomerByIdCommand {
     public CustomerModel execute() throws Exception{
         if(fiscalCode != null) {
             return customerService.retrieveCustomerById(fiscalCode);
+        } else {
+            throw new Exception("Input Param is null");
         }
-        throw new Exception("Input Param is null!");
     }
 
 }
