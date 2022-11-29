@@ -85,21 +85,22 @@ public class CustomerControllerTest {
     }
 
     //Test update customer
-    //Test add new Customer
     @Test
     public void updateCustomerIntegrationTest() {
         CustomerModel customerModel = new CustomerModel();
-        customerModel.setFiscalCode("ABCDE12345");
+        customerModel.setFiscalCode("ABC123");
         customerModel.setName("TestName");
         customerModel.setSurname("TestSurname");
         customerModel.setAddress("TestAddressUpdate");
-        CustomerModel customerCreated = restTemplate.postForObject(baseUrl.concat("/create"),customerModel, CustomerModel.class);
+        restTemplate.put(baseUrl.concat("/update"),customerModel);
+
+        CustomerModel customerUpdated = customerRepository.findById("ABC123").get();
         assertAll(
-                () -> assertNotNull(customerCreated),
-                () -> assertEquals("TestName", customerCreated.getName()),
-                () -> assertEquals("TestSurname", customerCreated.getSurname()),
-                () -> assertEquals("ABCDE12345", customerCreated.getFiscalCode()),
-                () -> assertEquals("TestAddressUpdate", customerCreated.getAddress())
+                () -> assertNotNull(customerUpdated),
+                () -> assertEquals("TestName", customerUpdated.getName()),
+                () -> assertEquals("TestSurname", customerUpdated.getSurname()),
+                () -> assertEquals("ABC123", customerUpdated.getFiscalCode()),
+                () -> assertEquals("TestAddressUpdate", customerUpdated.getAddress())
         );
     }
 
