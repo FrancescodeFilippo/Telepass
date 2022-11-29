@@ -40,7 +40,8 @@ public class CustomerServiceImpl implements CustomerService{
     public void updateCustomer(CustomerModel customerModel) throws Exception {
         CustomerModel customerToUpdate = customerRepository.findById(customerModel.getFiscalCode()).get();
         if(customerToUpdate != null) {
-            customerRepository.save(customerModel);
+            customerToUpdate.setAddress(customerModel.getAddress());
+            customerRepository.save(customerToUpdate);
         }
     }
 
