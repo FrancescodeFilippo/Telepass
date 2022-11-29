@@ -39,7 +39,8 @@ public class DeviceServiceImpl implements DeviceService{
     public void updateDevice(DeviceModel deviceModel) throws Exception {
         DeviceModel deviceToUpdate = deviceRepository.findById(deviceModel.getUuid()).get();
         if(deviceToUpdate != null) {
-            deviceRepository.save(deviceModel);
+            deviceToUpdate.setState(deviceModel.getState());
+            deviceRepository.save(deviceToUpdate);
         }
     }
 
