@@ -1,7 +1,9 @@
 package com.telepass.challenge.command.device;
 
+import com.telepass.challenge.model.CustomerDevices;
 import com.telepass.challenge.model.CustomerModel;
 import com.telepass.challenge.model.DeviceModel;
+import com.telepass.challenge.service.CustomerService;
 import com.telepass.challenge.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +17,8 @@ public class CreateDeviceCommand {
     private DeviceModel deviceModel;
     @Autowired
     private DeviceService deviceService;
+    @Autowired
+    private CustomerService customerService;
 
     //CONSTRUCTOR
     public CreateDeviceCommand() {}
@@ -24,9 +28,19 @@ public class CreateDeviceCommand {
 
     //METHODS
     public DeviceModel execute() throws Exception {
-        if(deviceModel != null) {
-            return deviceService.addNewDevice(this.deviceModel);
+        //retrieve customer
+        CustomerModel customerModel = customerService.retrieveCustomerById(deviceModel.getFiscalCode());
+        if(customerModel != null) {
+            //retrieve Customer devices List
+            CustomerDevices customerDevices = customerService.getCustomerDevicesList(customerModel.getFiscalCode());
+            //if customer has less of 2 device add new device
+            if (customerModel != null && customerDevices.getDeviceList().size() < 2) {
+                return deviceService.addNewDevice(this.deviceModel);
+            } else {
+                throw new Exception("Customer has 2 or more device!");
+            }
+        } else {
+            return null;
         }
-        throw new Exception("Input Param is null!");
     }
 }

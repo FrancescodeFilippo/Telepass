@@ -1,6 +1,7 @@
 package com.telepass.challenge.controller;
 
-import com.telepass.challenge.command.*;
+import com.telepass.challenge.command.customer.*;
+import com.telepass.challenge.model.CustomerDevices;
 import com.telepass.challenge.model.CustomerModel;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,22 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/getDevice/{fiscalCode}")
+    public ResponseEntity<CustomerDevices> getCustomerDevices(@PathVariable("fiscalCode") String fiscalCode) {
+
+        try {
+            GetCustomerDevicesCommand getCustomerDevicesCommand = beanFactory.getBean(GetCustomerDevicesCommand.class, fiscalCode);
+            CustomerDevices customerDevices = getCustomerDevicesCommand.execute();
+            if(customerDevices != null) {
+                return new ResponseEntity<>(customerDevices,HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

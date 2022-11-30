@@ -1,8 +1,6 @@
 package com.telepass.challenge.controller;
 
-import com.telepass.challenge.command.*;
 import com.telepass.challenge.command.device.*;
-import com.telepass.challenge.model.CustomerModel;
 import com.telepass.challenge.model.DeviceModel;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +54,13 @@ public class DeviceController {
         try {
             CreateDeviceCommand createDeviceCommand = beanFactory.getBean(CreateDeviceCommand.class, deviceModel);
             DeviceModel device = createDeviceCommand.execute();
-            return new ResponseEntity<>(device,HttpStatus.CREATED);
+            if(device != null) {
+                return ResponseEntity.ok(device);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.noContent().eTag(e.getMessage()).build();
         }
     }
 
@@ -75,10 +77,10 @@ public class DeviceController {
     }
 
     //Delete customer from db
-    @DeleteMapping("/delete/{uuid}")
-    public ResponseEntity<HttpStatus> deleteDevice(@PathVariable("uuid") String uuid) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<HttpStatus> deleteDevice(@RequestBody DeviceModel deviceModel) {
         try {
-            DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, uuid);
+            DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, deviceModel);
             deleteDeviceCommand.execute();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

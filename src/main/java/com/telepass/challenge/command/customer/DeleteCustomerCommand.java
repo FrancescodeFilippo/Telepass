@@ -1,6 +1,5 @@
-package com.telepass.challenge.command;
+package com.telepass.challenge.command.customer;
 
-import com.telepass.challenge.model.CustomerModel;
 import com.telepass.challenge.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -8,23 +7,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class UpdateCustomerCommand {
+public class DeleteCustomerCommand {
 
     //CLASS VARIABLES
-    private CustomerModel customerModel;
+    private String fiscalCode;
     @Autowired
     private CustomerService customerService;
 
     //CONSTRUCTOR
-    public UpdateCustomerCommand() {}
-    public UpdateCustomerCommand(CustomerModel customerModel) {
-        this.customerModel = customerModel;
+    public DeleteCustomerCommand() {}
+    public DeleteCustomerCommand(String fiscalCode) {
+        this.fiscalCode = fiscalCode;
     }
 
     //METHODS
     public void execute() throws Exception {
-        if(customerModel != null) {
-            customerService.updateCustomer(this.customerModel);
+        if(fiscalCode != null) {
+            customerService.deleteCustomer(this.fiscalCode);
         } else {
             throw new Exception("Input Param is null!");
         }

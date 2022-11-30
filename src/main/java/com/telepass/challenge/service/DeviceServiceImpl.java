@@ -45,9 +45,16 @@ public class DeviceServiceImpl implements DeviceService{
     }
 
     @Override
-    public void deleteDevice(String uuid) throws Exception {
-        if(uuid != null) {
-            deviceRepository.deleteById(uuid);
+    public void deleteDevice(String fiscalCode,String uuid) throws Exception {
+        if(uuid != null && fiscalCode != null) {
+            deviceRepository.deleteDevices(fiscalCode,uuid);
         }
     }
+
+//    @Override
+//    public void deleteDevice(String fiscalCode) throws Exception {
+//        if(fiscalCode != null) {
+//            deviceRepository.deleteById(fiscalCode);
+//        }
+//    }
 }

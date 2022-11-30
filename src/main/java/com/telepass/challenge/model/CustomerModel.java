@@ -7,11 +7,13 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "Customer")
 @Getter
 @Setter
-public class CustomerModel {
+public class CustomerModel implements Serializable {
 
     @Id
     @Column(name="fiscal_code")

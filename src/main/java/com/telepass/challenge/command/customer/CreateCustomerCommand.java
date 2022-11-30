@@ -1,4 +1,4 @@
-package com.telepass.challenge.command;
+package com.telepass.challenge.command.customer;
 
 import com.telepass.challenge.model.CustomerModel;
 import com.telepass.challenge.service.CustomerService;

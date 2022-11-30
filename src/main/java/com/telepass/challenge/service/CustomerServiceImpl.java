@@ -1,11 +1,13 @@
 package com.telepass.challenge.service;
 
+import com.telepass.challenge.model.CustomerDevices;
 import com.telepass.challenge.model.CustomerModel;
+import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +16,8 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private DeviceService deviceService;
 
     @Override
     public List<CustomerModel> retrieveAllCustomers() throws Exception {
@@ -49,6 +53,37 @@ public class CustomerServiceImpl implements CustomerService{
     public void deleteCustomer(String fiscalCode) throws Exception {
         if(fiscalCode != null) {
             customerRepository.deleteById(fiscalCode);
+        }
+    }
+
+    @Override
+    public CustomerDevices getCustomerDevicesList(String fiscalCode) throws Exception {
+        //retrieve customer
+        CustomerModel customer = retrieveCustomerById(fiscalCode);
+        if(customer != null) {
+            //retrieve all devices
+            List<DeviceModel> devices = deviceService.retrieveAllDevices();
+
+            //set data customer response
+            CustomerDevices customerDevices = new CustomerDevices();
+            customerDevices.setFiscalCode(customer.getFiscalCode());
+            customerDevices.setAddress(customer.getAddress());
+            customerDevices.setSurname(customer.getSurname());
+            customerDevices.setName(customer.getName());
+
+            //find customer device
+            List<DeviceModel> customerDevicesList = new ArrayList<>();
+            for (DeviceModel device : devices) {
+                if (device.getFiscalCode().equalsIgnoreCase(customer.getFiscalCode())) {
+                    customerDevicesList.add(device);
+                }
+            }
+
+            //set device and return response
+            customerDevices.setDeviceList(customerDevicesList);
+            return customerDevices;
+        } else {
+            throw new Exception("Customer not found");
         }
     }
 
