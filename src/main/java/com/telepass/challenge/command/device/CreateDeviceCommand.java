@@ -39,7 +39,19 @@ public class CreateDeviceCommand {
             CustomerDevices customerDevices = customerService.getCustomerDevicesList(customerModel.getFiscalCode());
             //if customer has less of 2 device add new device
             if (customerModel != null && customerDevices.getDeviceList().size() < maxCustomerDeviceNumber) {
-                return deviceService.addNewDevice(this.deviceModel);
+                //check if device to add has different id for each customer's devices
+                boolean isNewDevice = true;
+                for (DeviceModel customerDevice: customerDevices.getDeviceList()) {
+                    if(customerDevice.getDeviceId().getUuid().equalsIgnoreCase(deviceModel.getDeviceId().getUuid())) {
+                        isNewDevice = false;
+                        break;
+                    }
+                }
+                if(isNewDevice) {
+                    return deviceService.addNewDevice(this.deviceModel);
+                } else {
+                    throw new Exception("Device already exist!");
+                }
             } else {
                 throw new Exception("Customer has 2 or more device!");
             }

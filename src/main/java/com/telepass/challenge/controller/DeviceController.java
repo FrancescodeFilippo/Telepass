@@ -22,7 +22,7 @@ public class DeviceController {
     //Retrieve all devices from db
     @GetMapping("/getAll")
     public ResponseEntity<List<DeviceModel>> getAllDevice() {
-
+        //TODO fix response format
         try {
             GetAllDevicesCommand getAllDevicesCommand = beanFactory.getBean(GetAllDevicesCommand.class);
             List<DeviceModel> deviceModelList = getAllDevicesCommand.execute();
@@ -35,7 +35,7 @@ public class DeviceController {
     //Search device by id
     @GetMapping("/get/{fiscalCode}/{uuid}")
     public ResponseEntity<DeviceModel> getDeviceById(@PathVariable("fiscalCode") String fiscalCode,@PathVariable("uuid") String uuid) {
-
+        //TODO fix response format
         try {
             DeviceId deviceId = new DeviceId(uuid,fiscalCode);
             GetDeviceByIdCommand getDeviceByIdCommand = beanFactory.getBean(GetDeviceByIdCommand.class, deviceId);
@@ -53,6 +53,7 @@ public class DeviceController {
     //Save new customer on db
     @PostMapping("/create")
     public ResponseEntity<DeviceModel> createDevice(@RequestBody DeviceModel deviceModel) {
+        //TODO add enum value for device state
         try {
             CreateDeviceCommand createDeviceCommand = beanFactory.getBean(CreateDeviceCommand.class, deviceModel);
             DeviceModel device = createDeviceCommand.execute();
@@ -69,6 +70,7 @@ public class DeviceController {
     //Update customer by id
     @PutMapping("/update")
     public ResponseEntity<HttpStatus> updateDevice(@RequestBody DeviceModel deviceModel) {
+        //TODO add enum value for device state
         try {
             UpdateDeviceCommand updateDeviceCommand = beanFactory.getBean(UpdateDeviceCommand.class, deviceModel);
             updateDeviceCommand.execute();
@@ -81,6 +83,7 @@ public class DeviceController {
     //Delete customer from db
     @DeleteMapping("/delete/{fiscalCode}/{uuid}")
     public ResponseEntity<HttpStatus> deleteDevice(@PathVariable("fiscalCode") String fiscalCode,@PathVariable("uuid") String uuid) {
+        //TODO fix when i passed uuid doesn't exist i received 200
         try {
             DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, fiscalCode,uuid);
             deleteDeviceCommand.execute();
