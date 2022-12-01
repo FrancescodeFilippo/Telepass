@@ -1,6 +1,7 @@
 package com.telepass.challenge.controller;
 
 import com.telepass.challenge.command.device.DeleteDeviceCommand;
+import com.telepass.challenge.model.DeviceId;
 import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.repository.DeviceRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,12 +48,12 @@ public class DeviceControllerTest {
     @Test
     public void getDeviceIntegrationTest() {
 
-        DeviceModel deviceModel = restTemplate.getForObject(baseUrl.concat("/get/{uuid}"), DeviceModel.class, "456");
+        DeviceModel deviceModel = restTemplate.getForObject(baseUrl.concat("/get/{fiscalCode}/{uuid}"), DeviceModel.class, "ABC123","456");
         assertAll(
                 () -> assertNotNull(deviceModel),
-                () -> assertEquals("456", deviceModel.getUuid()),
+                () -> assertEquals("456", deviceModel.getDeviceId().getUuid()),
                 () -> assertEquals("INACTIVE", deviceModel.getState()),
-                () -> assertEquals("ABC123", deviceModel.getFiscalCode())
+                () -> assertEquals("ABC123", deviceModel.getDeviceId().getFiscalCode())
         );
     }
 
@@ -73,15 +74,15 @@ public class DeviceControllerTest {
     @Test
     public void createDeviceIntegrationTest() {
         DeviceModel deviceModel = new DeviceModel();
-        deviceModel.setUuid("5");
+        DeviceId deviceId = new DeviceId("5","CBA321");
+        deviceModel.setDeviceId(deviceId);
         deviceModel.setState("ACTIVE");
-        deviceModel.setFiscalCode("CBA321");
         DeviceModel device = restTemplate.postForObject(baseUrl.concat("/create"),deviceModel, DeviceModel.class);
         assertAll(
                 () -> assertNotNull(device),
-                () -> assertEquals("5", device.getUuid()),
+                () -> assertEquals("5", device.getDeviceId().getUuid()),
                 () -> assertEquals("ACTIVE", device.getState()),
-                () -> assertEquals("CBA321", device.getFiscalCode())
+                () -> assertEquals("CBA321", device.getDeviceId().getFiscalCode())
         );
     }
 
@@ -89,16 +90,16 @@ public class DeviceControllerTest {
     @Test
     public void updateDeviceIntegrationTest() {
         DeviceModel deviceModel = new DeviceModel();
-        deviceModel.setUuid("678");
+        DeviceId deviceId = new DeviceId("678","CBA321");
+        deviceModel.setDeviceId(deviceId);
         deviceModel.setState("LOST");
-        deviceModel.setFiscalCode("CBA321");
         restTemplate.put(baseUrl.concat("/update"), deviceModel);
-        DeviceModel deviceUpdated = deviceRepository.findById("678").get();
+        DeviceModel deviceUpdated = deviceRepository.findById(deviceId).get();
         assertAll(
                 () -> assertNotNull(deviceUpdated),
-                () -> assertEquals("678", deviceUpdated.getUuid()),
+                () -> assertEquals("678", deviceUpdated.getDeviceId().getUuid()),
                 () -> assertEquals("LOST", deviceUpdated.getState()),
-                () -> assertEquals("CBA321", deviceUpdated.getFiscalCode())
+                () -> assertEquals("CBA321", deviceUpdated.getDeviceId().getFiscalCode())
 
         );
     }

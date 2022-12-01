@@ -22,11 +22,11 @@ public class UpdateCustomerCommand {
     }
 
     //METHODS
-    public void execute() throws Exception {
-        if(customerModel != null) {
-            customerService.updateCustomer(this.customerModel);
+    public boolean execute() throws Exception {
+        if(customerModel != null && customerModel.getFiscalCode()!= null) {
+            return customerService.updateCustomer(this.customerModel);
         } else {
-            throw new Exception("Input Param is null!");
+            return false;
         }
     }
 }

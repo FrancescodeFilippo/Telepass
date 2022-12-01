@@ -33,7 +33,7 @@ public class CreateDeviceCommand {
     //METHODS
     public DeviceModel execute() throws Exception {
         //retrieve customer
-        CustomerModel customerModel = customerService.retrieveCustomerById(deviceModel.getFiscalCode());
+        CustomerModel customerModel = customerService.retrieveCustomerById(deviceModel.getDeviceId().getFiscalCode());
         if(customerModel != null) {
             //retrieve Customer devices List
             CustomerDevices customerDevices = customerService.getCustomerDevicesList(customerModel.getFiscalCode());

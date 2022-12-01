@@ -1,6 +1,7 @@
 package com.telepass.challenge.controller;
 
 import com.telepass.challenge.command.device.*;
+import com.telepass.challenge.model.DeviceId;
 import com.telepass.challenge.model.DeviceModel;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,12 @@ public class DeviceController {
     }
 
     //Search device by id
-    @GetMapping("/get/{uuid}")
-    public ResponseEntity<DeviceModel> getDeviceById(@PathVariable("uuid") String uuid) {
+    @GetMapping("/get/{fiscalCode}/{uuid}")
+    public ResponseEntity<DeviceModel> getDeviceById(@PathVariable("fiscalCode") String fiscalCode,@PathVariable("uuid") String uuid) {
 
         try {
-            GetDeviceByIdCommand getDeviceByIdCommand = beanFactory.getBean(GetDeviceByIdCommand.class, uuid);
+            DeviceId deviceId = new DeviceId(uuid,fiscalCode);
+            GetDeviceByIdCommand getDeviceByIdCommand = beanFactory.getBean(GetDeviceByIdCommand.class, deviceId);
             DeviceModel device = getDeviceByIdCommand.execute();
             if(device != null) {
                 return new ResponseEntity<>(device,HttpStatus.OK);

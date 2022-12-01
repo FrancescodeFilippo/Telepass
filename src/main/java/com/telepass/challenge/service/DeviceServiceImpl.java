@@ -1,5 +1,6 @@
 package com.telepass.challenge.service;
 
+import com.telepass.challenge.model.DeviceId;
 import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class DeviceServiceImpl implements DeviceService{
     }
 
     @Override
-    public DeviceModel retrieveDeviceById(String uuid) throws Exception {
-        Optional<DeviceModel> deviceModel = deviceRepository.findById(uuid);
+    public DeviceModel retrieveDeviceById(DeviceId deviceId) throws Exception {
+        Optional<DeviceModel> deviceModel = deviceRepository.findById(deviceId);
         if(!deviceModel.isEmpty() && deviceModel.get() != null) {
             return deviceModel.get();
         } else {
@@ -37,7 +38,7 @@ public class DeviceServiceImpl implements DeviceService{
 
     @Override
     public void updateDevice(DeviceModel deviceModel) throws Exception {
-        DeviceModel deviceToUpdate = deviceRepository.findById(deviceModel.getUuid()).get();
+        DeviceModel deviceToUpdate = deviceRepository.findById(deviceModel.getDeviceId()).get();
         if(deviceToUpdate != null) {
             deviceToUpdate.setState(deviceModel.getState());
             deviceRepository.save(deviceToUpdate);
@@ -51,10 +52,5 @@ public class DeviceServiceImpl implements DeviceService{
         }
     }
 
-//    @Override
-//    public void deleteDevice(String fiscalCode) throws Exception {
-//        if(fiscalCode != null) {
-//            deviceRepository.deleteById(fiscalCode);
-//        }
-//    }
+
 }

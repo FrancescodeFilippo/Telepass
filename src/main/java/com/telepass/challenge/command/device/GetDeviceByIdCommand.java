@@ -1,5 +1,6 @@
 package com.telepass.challenge.command.device;
 
+import com.telepass.challenge.model.DeviceId;
 import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,13 @@ import org.springframework.stereotype.Component;
 public class GetDeviceByIdCommand {
 
     //CLASS VARIABLES
-    private String uuid;
+    private DeviceId uuid;
     @Autowired
     private DeviceService deviceService;
 
     //CONSTRUCTOR
     public GetDeviceByIdCommand() {}
-    public GetDeviceByIdCommand(String uuid) {
+    public GetDeviceByIdCommand(DeviceId uuid) {
         this.uuid = uuid;
     }
 

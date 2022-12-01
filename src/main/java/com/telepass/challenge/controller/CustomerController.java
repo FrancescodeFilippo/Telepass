@@ -65,10 +65,14 @@ public class CustomerController {
     public ResponseEntity<HttpStatus> updateCustomer(@RequestBody CustomerModel customerModel) {
         try {
             UpdateCustomerCommand updateCustomerCommand = beanFactory.getBean(UpdateCustomerCommand.class, customerModel);
-            updateCustomerCommand.execute();
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean updated = updateCustomerCommand.execute();
+            if(updated) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

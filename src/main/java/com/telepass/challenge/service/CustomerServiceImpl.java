@@ -41,11 +41,15 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public void updateCustomer(CustomerModel customerModel) throws Exception {
-        CustomerModel customerToUpdate = customerRepository.findById(customerModel.getFiscalCode()).get();
-        if(customerToUpdate != null) {
-            customerToUpdate.setAddress(customerModel.getAddress());
-            customerRepository.save(customerToUpdate);
+    public boolean updateCustomer(CustomerModel customerModel) throws Exception {
+        Optional<CustomerModel> customerToUpdate = customerRepository.findById(customerModel.getFiscalCode());
+        if(!customerToUpdate.isEmpty()) {
+            CustomerModel updateCustomer = customerToUpdate.get();
+            updateCustomer.setAddress(customerModel.getAddress());
+            customerRepository.save(updateCustomer);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -74,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService{
             //find customer device
             List<DeviceModel> customerDevicesList = new ArrayList<>();
             for (DeviceModel device : devices) {
-                if (device.getFiscalCode().equalsIgnoreCase(customer.getFiscalCode())) {
+                if (device.getDeviceId().getFiscalCode().equalsIgnoreCase(customer.getFiscalCode())) {
                     customerDevicesList.add(device);
                 }
             }
@@ -83,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService{
             customerDevices.setDeviceList(customerDevicesList);
             return customerDevices;
         } else {
-            throw new Exception("Customer not found");
+            return null;
         }
     }
 

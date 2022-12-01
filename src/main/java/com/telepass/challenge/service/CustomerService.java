@@ -12,7 +12,7 @@ public interface CustomerService {
     List<CustomerModel> retrieveAllCustomers() throws Exception;
     CustomerModel retrieveCustomerById(String fiscalCode) throws Exception;
     CustomerModel addNewCustomer(CustomerModel customerModel) throws Exception;
-    void updateCustomer(CustomerModel customerModel) throws Exception;
+    boolean updateCustomer(CustomerModel customerModel) throws Exception;
     void deleteCustomer(String fiscalCode) throws Exception;
     CustomerDevices getCustomerDevicesList(String fiscalCode) throws Exception;
 
