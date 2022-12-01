@@ -11,20 +11,22 @@ import org.springframework.stereotype.Component;
 public class DeleteDeviceCommand {
 
     //CLASS VARIABLES
-    private DeviceModel deviceModel;
+    private String fiscalCode;
+    private String uuid;
     @Autowired
     private DeviceService deviceService;
 
     //CONSTRUCTOR
     public DeleteDeviceCommand() {}
-    public DeleteDeviceCommand(DeviceModel deviceModel) {
-        this.deviceModel = deviceModel;
+    public DeleteDeviceCommand(String fiscalCode, String uuid) {
+        this.fiscalCode = fiscalCode;
+        this.uuid = uuid;
     }
 
     //METHODS
     public void execute() throws Exception {
-        if(deviceModel != null) {
-            deviceService.deleteDevice(deviceModel.getFiscalCode(), deviceModel.getUuid());
+        if(fiscalCode != null && uuid != null) {
+            deviceService.deleteDevice(fiscalCode, uuid);
         } else {
             throw new Exception("Input Param is null!");
         }

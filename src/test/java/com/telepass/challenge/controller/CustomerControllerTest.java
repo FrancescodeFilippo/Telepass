@@ -46,8 +46,8 @@ public class CustomerControllerTest {
         CustomerModel customerModel = restTemplate.getForObject(baseUrl.concat("/getCustomer/{id}"), CustomerModel.class, "ABC123");
         assertAll(
                 () -> assertNotNull(customerModel),
-                () -> assertEquals("Mario", customerModel.getName()),
-                () -> assertEquals("Rossi", customerModel.getSurname()),
+                () -> assertEquals("TName", customerModel.getName()),
+                () -> assertEquals("TSurname", customerModel.getSurname()),
                 () -> assertEquals("ABC123", customerModel.getFiscalCode()),
                 () -> assertEquals("Via dei Mille", customerModel.getAddress())
         );
@@ -88,18 +88,16 @@ public class CustomerControllerTest {
     @Test
     public void updateCustomerIntegrationTest() {
         CustomerModel customerModel = new CustomerModel();
-        customerModel.setFiscalCode("ABC123");
-        customerModel.setName("TestName");
-        customerModel.setSurname("TestSurname");
+        customerModel.setFiscalCode("EDC654");
         customerModel.setAddress("TestAddressUpdate");
         restTemplate.put(baseUrl.concat("/update"),customerModel);
 
-        CustomerModel customerUpdated = customerRepository.findById("ABC123").get();
+        CustomerModel customerUpdated = customerRepository.findById("EDC654").get();
         assertAll(
                 () -> assertNotNull(customerUpdated),
-                () -> assertEquals("TestName", customerUpdated.getName()),
-                () -> assertEquals("TestSurname", customerUpdated.getSurname()),
-                () -> assertEquals("ABC123", customerUpdated.getFiscalCode()),
+                () -> assertEquals("Paolo", customerUpdated.getName()),
+                () -> assertEquals("Rossi", customerUpdated.getSurname()),
+                () -> assertEquals("EDC654", customerUpdated.getFiscalCode()),
                 () -> assertEquals("TestAddressUpdate", customerUpdated.getAddress())
         );
     }

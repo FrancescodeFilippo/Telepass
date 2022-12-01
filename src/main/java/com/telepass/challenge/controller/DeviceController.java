@@ -77,10 +77,10 @@ public class DeviceController {
     }
 
     //Delete customer from db
-    @DeleteMapping("/delete")
-    public ResponseEntity<HttpStatus> deleteDevice(@RequestBody DeviceModel deviceModel) {
+    @DeleteMapping("/delete/{fiscalCode}/{uuid}")
+    public ResponseEntity<HttpStatus> deleteDevice(@PathVariable("fiscalCode") String fiscalCode,@PathVariable("uuid") String uuid) {
         try {
-            DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, deviceModel);
+            DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, fiscalCode,uuid);
             deleteDeviceCommand.execute();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

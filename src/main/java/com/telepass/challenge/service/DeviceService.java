@@ -13,6 +13,5 @@ public interface DeviceService {
     DeviceModel addNewDevice(DeviceModel deviceModel) throws Exception;
     void updateDevice(DeviceModel deviceModel) throws Exception;
     void deleteDevice(String fiscalCode,String deviceId) throws Exception;
-//    void deleteDevice(String fiscalCode) throws Exception;
 
 }

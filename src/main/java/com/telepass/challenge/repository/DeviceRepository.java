@@ -11,5 +11,5 @@ public interface DeviceRepository extends JpaRepository<DeviceModel, String> {
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM Device d WHERE d.uuid like %?1 AND d.fiscal_code like %?2", nativeQuery = true)
-    void deleteDevices(String fiscalCode,String uuid);
+    void deleteDevices(String uuid,String fiscalCode);
 }

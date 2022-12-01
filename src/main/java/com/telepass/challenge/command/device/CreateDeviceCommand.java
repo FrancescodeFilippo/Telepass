@@ -6,6 +6,7 @@ import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.service.CustomerService;
 import com.telepass.challenge.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,9 @@ public class CreateDeviceCommand {
     private DeviceService deviceService;
     @Autowired
     private CustomerService customerService;
+
+    @Value("${max.customer.device.number}")
+    private Integer maxCustomerDeviceNumber;
 
     //CONSTRUCTOR
     public CreateDeviceCommand() {}
@@ -34,7 +38,7 @@ public class CreateDeviceCommand {
             //retrieve Customer devices List
             CustomerDevices customerDevices = customerService.getCustomerDevicesList(customerModel.getFiscalCode());
             //if customer has less of 2 device add new device
-            if (customerModel != null && customerDevices.getDeviceList().size() < 2) {
+            if (customerModel != null && customerDevices.getDeviceList().size() < maxCustomerDeviceNumber) {
                 return deviceService.addNewDevice(this.deviceModel);
             } else {
                 throw new Exception("Customer has 2 or more device!");

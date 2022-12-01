@@ -1,16 +1,15 @@
 package com.telepass.challenge.controller;
 
-import com.telepass.challenge.model.CustomerModel;
+import com.telepass.challenge.command.device.DeleteDeviceCommand;
 import com.telepass.challenge.model.DeviceModel;
-import com.telepass.challenge.repository.CustomerRepository;
 import com.telepass.challenge.repository.DeviceRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +23,8 @@ public class DeviceControllerTest {
 
     @Autowired
     private DeviceRepository deviceRepository;
+    @Autowired
+    private BeanFactory beanFactory;
 
     @LocalServerPort
     private int port;
@@ -46,11 +47,12 @@ public class DeviceControllerTest {
     @Test
     public void getDeviceIntegrationTest() {
 
-        DeviceModel deviceModel = restTemplate.getForObject(baseUrl.concat("/get/{uuid}"), DeviceModel.class, "123");
+        DeviceModel deviceModel = restTemplate.getForObject(baseUrl.concat("/get/{uuid}"), DeviceModel.class, "456");
         assertAll(
                 () -> assertNotNull(deviceModel),
-                () -> assertEquals("123", deviceModel.getUuid()),
-                () -> assertEquals("ACTIVE", deviceModel.getState())
+                () -> assertEquals("456", deviceModel.getUuid()),
+                () -> assertEquals("INACTIVE", deviceModel.getState()),
+                () -> assertEquals("ABC123", deviceModel.getFiscalCode())
         );
     }
 
@@ -71,13 +73,15 @@ public class DeviceControllerTest {
     @Test
     public void createDeviceIntegrationTest() {
         DeviceModel deviceModel = new DeviceModel();
-        deviceModel.setUuid("1234");
+        deviceModel.setUuid("5");
         deviceModel.setState("ACTIVE");
+        deviceModel.setFiscalCode("CBA321");
         DeviceModel device = restTemplate.postForObject(baseUrl.concat("/create"),deviceModel, DeviceModel.class);
         assertAll(
                 () -> assertNotNull(device),
-                () -> assertEquals("1234", device.getUuid()),
-                () -> assertEquals("ACTIVE", device.getState())
+                () -> assertEquals("5", device.getUuid()),
+                () -> assertEquals("ACTIVE", device.getState()),
+                () -> assertEquals("CBA321", device.getFiscalCode())
         );
     }
 
@@ -85,24 +89,27 @@ public class DeviceControllerTest {
     @Test
     public void updateDeviceIntegrationTest() {
         DeviceModel deviceModel = new DeviceModel();
-        deviceModel.setUuid("123");
+        deviceModel.setUuid("678");
         deviceModel.setState("LOST");
+        deviceModel.setFiscalCode("CBA321");
         restTemplate.put(baseUrl.concat("/update"), deviceModel);
-        DeviceModel deviceUpdated = deviceRepository.findById("123").get();
+        DeviceModel deviceUpdated = deviceRepository.findById("678").get();
         assertAll(
                 () -> assertNotNull(deviceUpdated),
-                () -> assertEquals("123", deviceUpdated.getUuid()),
-                () -> assertEquals("LOST", deviceUpdated.getState())
+                () -> assertEquals("678", deviceUpdated.getUuid()),
+                () -> assertEquals("LOST", deviceUpdated.getState()),
+                () -> assertEquals("CBA321", deviceUpdated.getFiscalCode())
+
         );
     }
 
     //Test api delete Device By Id
     @Test
-    public void deleteDeviceIntegrationTest() {
+    public void deleteDeviceIntegrationTest() throws Exception{
 
         int count = deviceRepository.findAll().size();
-        restTemplate.delete(baseUrl.concat("/delete/{uuid}"),"123");
-
+        DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, "ABC123","123");
+        deleteDeviceCommand.execute();
         int countAfterDelete = deviceRepository.findAll().size();
         if(count != 0) {
             assertEquals(count-1, countAfterDelete);
