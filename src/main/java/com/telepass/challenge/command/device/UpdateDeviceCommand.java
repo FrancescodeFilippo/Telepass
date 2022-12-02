@@ -2,6 +2,7 @@ package com.telepass.challenge.command.device;
 
 import com.telepass.challenge.model.DeviceModel;
 import com.telepass.challenge.service.DeviceService;
+import com.telepass.challenge.utils.DeviceStateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,14 @@ public class UpdateDeviceCommand {
     }
 
     //METHODS
-    public void execute() throws Exception {
+    public DeviceModel execute() throws Exception {
         if(deviceModel != null) {
-            deviceService.updateDevice(this.deviceModel);
+            try{
+                DeviceStateEnum.valueOf(deviceModel.getState());
+                return deviceService.updateDevice(this.deviceModel);
+            }catch (Exception e) {
+                throw new Exception("Invalid State!");
+            }
         } else {
             throw new Exception("Input Param is null!");
         }

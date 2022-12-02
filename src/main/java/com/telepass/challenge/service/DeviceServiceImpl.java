@@ -37,18 +37,24 @@ public class DeviceServiceImpl implements DeviceService{
     }
 
     @Override
-    public void updateDevice(DeviceModel deviceModel) throws Exception {
-        DeviceModel deviceToUpdate = deviceRepository.findById(deviceModel.getDeviceId()).get();
+    public DeviceModel updateDevice(DeviceModel deviceModel) throws Exception {
+        DeviceModel deviceToUpdate = retrieveDeviceById(deviceModel.getDeviceId());
         if(deviceToUpdate != null) {
             deviceToUpdate.setState(deviceModel.getState());
-            deviceRepository.save(deviceToUpdate);
+            return deviceRepository.save(deviceToUpdate);
         }
+        return null;
     }
 
     @Override
-    public void deleteDevice(String fiscalCode,String uuid) throws Exception {
-        if(uuid != null && fiscalCode != null) {
+    public boolean deleteDevice(String fiscalCode,String uuid) throws Exception {
+        DeviceId deviceId = new DeviceId(uuid,fiscalCode);
+        DeviceModel deviceToDelete = retrieveDeviceById(deviceId);
+        if(deviceToDelete != null) {
             deviceRepository.deleteDevices(uuid,fiscalCode);
+            return true;
+        } else {
+            return false;
         }
     }
 

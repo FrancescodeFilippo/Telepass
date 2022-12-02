@@ -24,9 +24,9 @@ public class DeleteDeviceCommand {
     }
 
     //METHODS
-    public void execute() throws Exception {
+    public boolean execute() throws Exception {
         if(fiscalCode != null && uuid != null) {
-            deviceService.deleteDevice(fiscalCode, uuid);
+            return deviceService.deleteDevice(fiscalCode, uuid);
         } else {
             throw new Exception("Input Param is null!");
         }

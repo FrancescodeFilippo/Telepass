@@ -3,6 +3,7 @@ package com.telepass.challenge.controller;
 import com.telepass.challenge.command.device.*;
 import com.telepass.challenge.model.DeviceId;
 import com.telepass.challenge.model.DeviceModel;
+import com.telepass.challenge.utils.DeviceStateEnum;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,6 @@ public class DeviceController {
     //Save new customer on db
     @PostMapping("/create")
     public ResponseEntity<DeviceModel> createDevice(@RequestBody DeviceModel deviceModel) {
-        //TODO add enum value for device state
         try {
             CreateDeviceCommand createDeviceCommand = beanFactory.getBean(CreateDeviceCommand.class, deviceModel);
             DeviceModel device = createDeviceCommand.execute();
@@ -70,26 +70,32 @@ public class DeviceController {
     //Update customer by id
     @PutMapping("/update")
     public ResponseEntity<HttpStatus> updateDevice(@RequestBody DeviceModel deviceModel) {
-        //TODO add enum value for device state
         try {
             UpdateDeviceCommand updateDeviceCommand = beanFactory.getBean(UpdateDeviceCommand.class, deviceModel);
-            updateDeviceCommand.execute();
-            return new ResponseEntity<>(HttpStatus.OK);
+            DeviceModel deviceUpdated = updateDeviceCommand.execute();
+            if(deviceUpdated != null) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.noContent().eTag(e.getMessage()).build();
         }
     }
 
     //Delete customer from db
     @DeleteMapping("/delete/{fiscalCode}/{uuid}")
     public ResponseEntity<HttpStatus> deleteDevice(@PathVariable("fiscalCode") String fiscalCode,@PathVariable("uuid") String uuid) {
-        //TODO fix when i passed uuid doesn't exist i received 200
         try {
             DeleteDeviceCommand deleteDeviceCommand = beanFactory.getBean(DeleteDeviceCommand.class, fiscalCode,uuid);
-            deleteDeviceCommand.execute();
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean isDeviceDeleted = deleteDeviceCommand.execute();
+            if(isDeviceDeleted) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.noContent().eTag(e.getMessage()).build();
         }
     }
 }
