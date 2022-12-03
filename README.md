@@ -1,20 +1,25 @@
 # Telepass
 Telepass Challenge
 
-Clonare il repository in locale tramite il seguente indirizzo github:
-https://github.com/FrancescodeFilippo/Telepass
+Una volta clonato il repository ed importato il progetto nell'ide di sviluppo (nel mio caso Intellij IDEA),
+eseguire i comandi maven "clean install" per la build del progetto stesso.
 
-Importare il progetto nell'ide di sviluppo (nel mio caso Intellij IDEA)
-Per la build del progetto lanciare i comandi maven clean install.
+Completata la build, 
+eseguire tramite la run di springboot la classe com.telepass.challenge.ChallengeApplication.
 
-Per lanciare l'applicazione runnare la classe ChallengeApplication.
-
-Tramite le collection PostMan allegate è possibile chiamare e testare tutte le api del progetto.
+Una volta avviato il server sarà possibile, 
+tramite le collection PostMan allegate nella cartella di progetto (Customer API.postman_collection.json, Device API.postman_collection.json)
+effettuare chiamate http e testare tutte le api.
 
 Sarà possibile creare/aggiornare/eliminare/recuperare i customer e i device.
 
 Le api risponderanno:
-- 200 in caso di Success
-- 404 nel caso in cui il customer/device non venga trovato
-- 500 in caso di errore generico del server
-- 204 con un messaggio nell'header della response http in caso di messaggio di errore customizzato
+
+200 in caso di Success
+404 nel caso in cui il customer/device non venga trovato
+500 in caso di errore generico del server
+204 con un messaggio nell'header della response http in caso di errore customizzato
+
+Note
+E' stato utilizzato un database embedded h2 e predisposti dei dati fittizi utilizzati solo per i test unitari/integration.
+Al primo avvio dall'applicazione il database sarà sempre vuoto, per cui aggiungere customer e/o device (tramite le apposite api) per popolare il db.
