@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "fc812ddf-2060-494b-b740-0e519a853c35",
-		"name": "Customer API",
+		"_postman_id": "704fd229-17f3-4508-a180-c04a18fd5909",
+		"name": "Customer API Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15113526"
 	},
@@ -33,7 +33,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/customer/getCustomer/ABC123",
+					"raw": "http://localhost:8080/customer/getAll",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -41,8 +41,7 @@
 					"port": "8080",
 					"path": [
 						"customer",
-						"getCustomer",
-						"ABC123"
+						"getAll"
 					]
 				}
 			},
@@ -55,7 +54,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
+					"raw": "{\r\n    \"fiscalCode\": \"ABC123\",\r\n    \"name\": \"Marioa\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -80,11 +79,11 @@
 		{
 			"name": "Update customer address",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
+					"raw": "{\r\n    \"fiscalCode\": \"ABC123\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Mille\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,7 +91,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/customer/create",
+					"raw": "http://localhost:8080/customer/update",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -100,7 +99,7 @@
 					"port": "8080",
 					"path": [
 						"customer",
-						"create"
+						"update"
 					]
 				}
 			},
@@ -109,19 +108,10 @@
 		{
 			"name": "Delete customer",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:8080/customer/create",
+					"raw": "http://localhost:8080/customer/delete/ABC123",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -129,7 +119,8 @@
 					"port": "8080",
 					"path": [
 						"customer",
-						"create"
+						"delete",
+						"ABC123"
 					]
 				}
 			},

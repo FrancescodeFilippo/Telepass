@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "563a3735-5587-48aa-95cd-18afc55bffd6",
-		"name": "Device API",
+		"_postman_id": "b68fc03f-1120-4487-957f-a60ef7fde6de",
+		"name": "Device API Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15113526"
 	},
@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/device/get/ABC123",
+					"raw": "http://localhost:8080/device/get/ABC123/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -21,28 +21,8 @@
 					"path": [
 						"device",
 						"get",
-						"ABC123"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get device by Customer ID",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/device/get/ABC123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"device",
-						"get",
-						"ABC123"
+						"ABC123",
+						"1"
 					]
 				}
 			},
@@ -54,7 +34,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/device/getAll/ABC123",
+					"raw": "http://localhost:8080/device/getAll",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -62,8 +42,7 @@
 					"port": "8080",
 					"path": [
 						"device",
-						"getAll",
-						"ABC123"
+						"getAll"
 					]
 				}
 			},
@@ -76,7 +55,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\"\r\n}",
+					"raw": "{\r\n    \"deviceId\":{\r\n        \"fiscalCode\": \"ABC123\",\r\n        \"uuid\": \"1\"\r\n    },\r\n    \"state\":\"ACTIVE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,7 +84,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
+					"raw": "{\r\n    \"deviceId\":{\r\n        \"fiscalCode\": \"ABC123\",\r\n        \"uuid\": \"1\"\r\n    },\r\n    \"state\":\"LOST\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -113,7 +92,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/device/create",
+					"raw": "http://localhost:8080/device/update",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -121,7 +100,7 @@
 					"port": "8080",
 					"path": [
 						"device",
-						"create"
+						"update"
 					]
 				}
 			},
@@ -132,17 +111,8 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"fiscalCode\": \"ABC1234\",\r\n    \"name\": \"Mario\",\r\n    \"surname\": \"Rossi\",\r\n    \"address\": \"Via dei Seicento\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:8080/device/delete/abc",
+					"raw": "http://localhost:8080/device/delete/ABC123/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -151,7 +121,8 @@
 					"path": [
 						"device",
 						"delete",
-						"abc"
+						"ABC123",
+						"2"
 					]
 				}
 			},
