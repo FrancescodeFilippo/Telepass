@@ -15,10 +15,10 @@ Sarà possibile creare/aggiornare/eliminare/recuperare i customer e i device.
 
 Le api risponderanno:
 
-200 in caso di Success
-404 nel caso in cui il customer/device non venga trovato
-500 in caso di errore generico del server
-204 con un messaggio nell'header della response http in caso di errore customizzato
+200 in caso di Success.
+404 nel caso in cui il customer/device non venga trovato.
+500 in caso di errore generico del server.
+204 con un messaggio nell'header della response http in caso di errore customizzato.
 
 Note
 E' stato utilizzato un database embedded h2 e predisposti dei dati fittizi utilizzati solo per i test unitari/integration.
