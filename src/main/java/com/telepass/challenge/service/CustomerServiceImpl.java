@@ -36,8 +36,12 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerModel addNewCustomer(CustomerModel customerModel) throws Exception{
-        CustomerModel customer = customerRepository.save(customerModel);
-        return customer;
+        Optional<CustomerModel> customer = customerRepository.findById(customerModel.getFiscalCode());
+        if(customer.isEmpty()) {
+            return customerRepository.save(customerModel);
+        } else {
+            return null;
+        }
     }
 
     @Override

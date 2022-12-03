@@ -24,7 +24,12 @@ public class CreateCustomerCommand {
     //METHODS
     public CustomerModel execute() throws Exception {
         if(customerModel != null) {
-            return customerService.addNewCustomer(this.customerModel);
+            CustomerModel customerCreated = customerService.addNewCustomer(this.customerModel);
+            if(customerCreated != null) {
+                return customerCreated;
+            } else {
+                throw new Exception("Customer already exist!");
+            }
         }
         throw new Exception("Input Param is null!");
     }

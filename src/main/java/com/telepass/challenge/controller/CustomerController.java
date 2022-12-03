@@ -56,7 +56,7 @@ public class CustomerController {
             CustomerModel customer = createCustomerCommand.execute();
             return new ResponseEntity<>(customer,HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.noContent().eTag(e.getMessage()).build();
         }
     }
 
